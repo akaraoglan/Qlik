@@ -1,0 +1,112 @@
+CarsafRapor:
+Load
+    POSNR as FaturaKalemNumarasi,
+    FKDAT_ANA as Ftrlm.trh.,
+    VBELN as Ftr.blg,
+    replace(ltrim(replace(MATNR,'0',' ')),' ','0') AS Malzeme,
+    ARKTX as MalzemeKisaMetni,
+    MATKL as MalGrubu,
+    FKIMG as FaturalananMiktar,
+    VRKME as SatisOlcuBirimi,
+    KZWI1 / FKIMG as BirimFiyat,
+    KZWI1 as Netdeger,
+    KZWI3 as KdvMatrah,
+    WAERK as BelgeParaBirimi,
+    KURSK as Kur,
+    KURSK * KZWI1 as TLDeger
+    ;
+ 
+SQL SELECT 
+    POSNR, 
+    FKDAT_ANA, 
+    VBELN, 
+    MATNR, 
+    ARKTX, 
+    MATKL, 
+    FKIMG, 
+    VRKME, 
+    KZWI1, 
+    KZWI3, 
+    WAERK,
+    KURSK
+    
+FROM VBRP
+WHERE VBELN IN ('9200019269');
+ 
+Left Join(CarsafRapor)
+Load
+replace(ltrim(replace(MATNR,'0',' ')),' ','0') AS Malzeme,
+HOEHE as Kalinlik,
+BREIT as En,
+LAENG as Boy
+;
+ 
+SQl SELECT MATNR, HOEHE, BREIT, LAENG
+FROM MARA;
+
+Left Join(CarsafRapor)
+Load
+VBELN as Ftr.blg,
+XBLNR as Referans,
+replace(ltrim(replace(KUNRG,'0',' ')),' ','0') AS Ftr.alici
+;
+
+SQl SELECT VBELN, XBLNR, KUNRG
+FROM VBRK;
+
+Left Join(CarsafRapor)
+Load
+replace(ltrim(replace(KUNNR,'0',' ')),' ','0') as Ftr.alici,
+NAME1 as FaturaAlicisiAdi
+;
+
+SQL SELECT KUNNR, NAME1
+FROM KNA1;
+
+
+
+Left Join(CarsafRapor)
+Load
+VBELN as Ftr.blg,
+POSNR as FaturaKalemNumarasi,
+STAWN as GTIP
+;
+
+SQL SELECT VBELN, POSNR, STAWN
+FROM /ITTR/IFT_T_R103;
+
+
+
+Left Join(CarsafRapor)
+Load
+FKART as Faturaturu,
+VBELN as [Ftr.blg]
+;
+
+SQL SELECT FKART, VBELN
+FROM VBRK;
+
+Left Join(CarsafRapor)
+Load 
+FKART as Faturaturu,
+VTEXT as Faturaturutanimi,
+SPRAS as Dil
+;
+
+SQL SELECT FKART, VTEXT, SPRAS
+FROM TVFKT
+WHERE SPRAS = 'TR'
+;
+
+Left Join (CarsafRapor)
+Load 
+DESCR as Ftr.blg,
+REXDT as Intac.Tarıh
+;
+ 
+SQL SELECT DESCR,REXDT from /ITTR/IFT_V_C101
+;
+
+
+
+
