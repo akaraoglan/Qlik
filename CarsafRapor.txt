@@ -107,6 +107,13 @@ REXDT as Intac.Tarıh
 SQL SELECT DESCR,REXDT from /ITTR/IFT_V_C101
 ;
 
+Left Join (CarsafRapor)
+Load
+MATKL as MalGrubu,
+WGBEZ as MalGrubuAdi
+;
 
+SQL SELECT MATKL, WGBEZ FROM T023T
+;
 
 
